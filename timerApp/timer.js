@@ -7,6 +7,8 @@ class Timer {
     this.puseButton = puseButton;
     if(callbacks){
         this.onStart= callbacks.onStart;
+        this.onTic = callbacks.onTic;
+        this.onComplete= callbacks.onComplete;
     }
     this.startButton.addEventListener("click", this.start);
     this.puseButton.addEventListener("click", this.pause);
@@ -25,8 +27,14 @@ class Timer {
   tick = () => {
     if (this.timeReamining <= 0) {
       this.pause();
+      if(this.onComplete){
+          this.onComplete();
+      }
     } else {
       this.timeReamining = this.timeReamining - 1;
+      if(this.onTic){
+          this.onTic();
+      }
     }
   };
   get timeReamining() {
@@ -38,14 +46,4 @@ class Timer {
   }
 }
 
-const durationInput = document.querySelector("#duration");
-const startButton = document.querySelector("#start");
-const puseButton = document.querySelector("#puse");
 
-const timer = new Timer(durationInput, startButton, puseButton, {
-  onStart() {
-    console.log("timer start on callback.....");
-  },
-  onTic() {},
-  onComplete() {},
-});
