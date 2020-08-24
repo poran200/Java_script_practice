@@ -15,10 +15,10 @@ class Timer {
   }
   start = () => {
     if(this.onStart){
-        this.onStart();
+        this.onStart(this.timeReamining);
     }  
     this.tick();
-    this.interval = setInterval(this.tick, 1000);
+    this.interval = setInterval(this.tick, 50);
   };
   pause = () => {
     console.log("Puse....");
@@ -31,9 +31,9 @@ class Timer {
           this.onComplete();
       }
     } else {
-      this.timeReamining = this.timeReamining - 1;
+      this.timeReamining = this.timeReamining - 0.05;
       if(this.onTic){
-          this.onTic();
+          this.onTic(this.timeReamining);
       }
     }
   };
@@ -42,7 +42,7 @@ class Timer {
   }
 
   set timeReamining(time) {
-    this.durationInput.value = time;
+    this.durationInput.value = time.toFixed(2);
   }
 }
 
