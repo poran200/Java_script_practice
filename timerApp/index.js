@@ -1,6 +1,6 @@
 const durationInput = document.querySelector("#duration");
 const startButton = document.querySelector("#start");
-const puseButton = document.querySelector("#puse");
+const puseButton = document.querySelector("#pause");
 const circle = document.querySelector("circle");
 
 const perimeter = circle.getAttribute("r") * 2 * Math.PI;
