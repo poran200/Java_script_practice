@@ -1,6 +1,7 @@
 const express = require('express');
-
+const bodyParser =require('body-parser');
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }))
 app.get('/', (req, res) => {
     res.send(`
      <div>
@@ -15,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/',((req, res) => {
-    console.log(req.formData)
+    console.log(req.body)
     res.send('Account created successfully');
 }))
 app.listen(8080,()=>{
