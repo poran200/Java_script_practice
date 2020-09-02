@@ -21,6 +21,7 @@ class UserRepository {
         const  users= await this.getAll()
         users.push(object);
         await this.writeAll(users);
+        return object;
     }
     async findById(id){
        let data = await this.getAll();
