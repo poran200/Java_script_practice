@@ -12,9 +12,27 @@ module.exports = {
         .isLength({min: 4, max: 20}).withMessage('Must be at least 4 and max 20 '),
 
     confirmPassword: check('confirmPassword').trim().custom(async (confirmPassword, {req}) => {
-        if (confirmPassword !== req.body.password) {
+        if (req.body.password !== req.body.confirmPassword) {
+            console.log(confirmPassword + ' ' + req.body.password);
             return Promise.reject('Password is incorrect match');
         }
-    })
+    }),
+    isUserPasswordValid: check('password').trim().custom(async (password, {req}) => {
+        const user = await userRepository.getOneBy({email: req.body.email});
+        if (!user) {
+            return Promise.reject('Password incorrect');
+        }
+        const isMatch = await userRepository.comparePassword(user.password, password);
+        if (!isMatch) {
+            return Promise.reject('Password incorrect');
+        }
+    }),
+    userEmailIsValid: check('email').trim().normalizeEmail().isEmail()
+        .custom(async (email, {req}) => {
+            const user = await userRepository.getOneBy({email});
+            if (!user) {
+                return Promise.reject(new Error('Email not found'));
+            }
+        })
 
 };
