@@ -1,6 +1,8 @@
 const {check} = require('express-validator');
 const userRepository = require('../../repository/users');
 module.exports = {
+    reqTitle: check('title').trim().isLength({min:5,max:30}),
+    reqPrice:check('price').trim().isFloat().isFloat({min:1}),
     requireEmail: check('email').trim().normalizeEmail().isEmail().custom(async (email) => {
         const existingUser = await userRepository.getOneBy({email});
         if (existingUser) {
