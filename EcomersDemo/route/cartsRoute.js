@@ -31,7 +31,7 @@ routes.post('/cart/products', async (req, res) => {
      await cartsRepository.update(cart.id,{
          items:cart.items,
      })
-     res.send('product added to cart')
+     res.redirect('/cart');
 });
 
 // receive a get request to show the  chart
