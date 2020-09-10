@@ -22,7 +22,7 @@ module.exports= class Repository {
     }
     async getAll(){
         const content = await fs.promises.readFile(this.fileName,'utf-8');
-        return  JSON.parse(content);
+        return  JSON.parse(content.toString('utf-8'));
     }
 
     async findById(id){

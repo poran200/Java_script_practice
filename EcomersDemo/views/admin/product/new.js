@@ -1,7 +1,7 @@
-const layout = require('../../layout');
+const layout = require('../layout');
 const {getError} = require('../../helper');
 
-module.exports = (errors) => {
+module.exports = ({errors}) => {
     return layout({
         content: ` <div class="columns is-centered">
         <div class="column is-half">

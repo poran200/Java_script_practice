@@ -36,15 +36,38 @@ router.post('/admin/products/new',
             return res.status(500).send('Internal Server Error');
         }
     }));
-router.get('/admin/products/:id/edit', async (req, res) => {
+router.get('/admin/products/:id/edit',requireAuth, async (req, res) => {
     const id = req.params.id;
     const product = await productRepository.getOneBy({id});
-    res.send(editProductTemplate({},product))
+    if (!product){
+        res.send('Product not found');
+    }
+    res.send(editProductTemplate({product}))
 });
-router.post('/admin/products/:id/edit', async (req, res) => {
-    console.log(req.params.id);
-
-
+router.post('/admin/products/:id/edit',
+    requireAuth,
+    upload.single('image'),
+    [reqTitle,reqPrice],
+    handelError(editProductTemplate,async (req)=>{
+        const product = await productRepository.findById(req.params.id);
+        return {product};
+    }),
+    async (req, res) => {
+     const change = req.body;
+     if (req.file){
+         change.image = req.file.buffer.toString('base64');
+     }
+         try {
+             await  productRepository.update(req.params.id, change);
+             res.redirect('/admin/products');
+         }catch (e) {
+             res.send(e.message);
+         }
+});
+router.post('/admin/products/:id/delete',requireAuth,
+   async (req, res) => {
+    await productRepository.delete(req.params.id);
+    res.redirect('/admin/products');
 });
 
 module.exports = router
